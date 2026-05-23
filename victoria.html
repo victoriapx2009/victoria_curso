@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -10,467 +9,283 @@
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body{
-      background: #c978f5;
+    body {
+      font-family: Arial, sans-serif;
     }
 
-    .card-hover{
-      transition: .3s;
+    .post-animation {
+      animation: aparecer 0.4s ease;
     }
 
-    .card-hover:hover{
-      transform: translateY(-5px);
-    }
-
-    .fade-in{
-      animation: fade .4s ease;
-    }
-
-    @keyframes fade{
-      from{
-        opacity:0;
-        transform: translateY(10px);
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: translateY(15px);
       }
-      to{
-        opacity:1;
+      to {
+        opacity: 1;
         transform: translateY(0);
       }
     }
   </style>
 </head>
 
-<body class="min-h-screen">
+<body class="bg-pink-50 text-gray-800 min-h-screen flex flex-col">
 
-  <!-- HEADER -->
-  <header class="bg-blue-600 text-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+  <!-- Cabeçalho -->
+  <header class="bg-pink-200 shadow-md p-5">
+    <div class="max-w-5xl mx-auto flex justify-between items-center">
+      <h1 class="text-3xl font-bold text-pink-800">
+        📚 Mural da Turma
+      </h1>
 
-      <div>
-        <h1 class="text-3xl font-bold">
-          📚 Mural da Turma
-        </h1>
-
-        <p class="text-blue-100 mt-1">
-          Compartilhe momentos, avisos e fotos da turma
-        </p>
-      </div>
-
-      <button
-        onclick="abrirModal()"
-        class="bg-white text-blue-600 font-semibold px-5 py-3 rounded-xl hover:bg-blue-100 transition"
-      >
-        + Nova Postagem
-      </button>
-
+      <nav class="space-x-4 font-semibold">
+        <a href="#" class="hover:text-pink-700">Início</a>
+        <a href="#" class="hover:text-pink-700">Postagens</a>
+        <a href="#" class="hover:text-pink-700">Contato</a>
+      </nav>
     </div>
   </header>
 
-  <!-- POSTS -->
-  <main class="max-w-7xl mx-auto p-6">
+  <!-- Conteúdo -->
+  <main class="flex-1 max-w-5xl mx-auto w-full p-5">
 
-    <div
-      id="postsContainer"
-      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-    >
+    <!-- Formulário -->
+    <section class="bg-white rounded-2xl shadow-lg p-6 mb-8">
 
-      <!-- POST 1 -->
-      <div class="bg-white rounded-2xl overflow-hidden shadow-md card-hover fade-in">
+      <h2 class="text-2xl font-bold text-pink-700 mb-4">
+        Criar Postagem
+      </h2>
 
-        <img
-          src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f"
-          class="w-full h-56 object-cover"
-        />
+      <input
+        type="text"
+        id="titulo"
+        placeholder="Título da postagem"
+        class="w-full border border-pink-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-pink-300"
+      >
 
-        <div class="p-5">
+      <textarea
+        id="conteudo"
+        rows="4"
+        placeholder="Escreva algo para a turma..."
+        class="w-full border border-pink-200 rounded-xl p-3 mb-4 focus:outline-none focus:ring-2 focus:ring-pink-300"
+      ></textarea>
 
-          <h2 class="text-2xl font-bold text-gray-800">
-            Feira de Ciências 🚀
-          </h2>
+      <!-- Upload de imagem -->
+      <div class="mb-4">
+        <label class="font-semibold text-pink-700">
+          Upload de imagem:
+        </label>
 
-          <p class="text-gray-600 mt-3">
-            Nossa turma participou da feira de ciências com projetos incríveis.
+        <input
+          type="file"
+          id="imagem"
+          accept="image/*"
+          class="mt-2 block"
+        >
+      </div>
+
+      <button
+        onclick="criarPost()"
+        class="bg-pink-500 hover:bg-pink-600 text-white px-6 py-3 rounded-xl font-bold transition"
+      >
+        Publicar
+      </button>
+
+    </section>
+
+    <!-- Sessão de posts -->
+    <section>
+
+      <h2 class="text-2xl font-bold text-pink-700 mb-5">
+        Postagens da Turma
+      </h2>
+
+      <div id="posts" class="space-y-6">
+
+        <!-- Post inicial -->
+        <div class="bg-white rounded-2xl shadow-lg p-5 post-animation">
+
+          <h3 class="text-xl font-bold text-pink-700 mb-2">
+            Bem-vindos!
+          </h3>
+
+          <p class="mb-4">
+            Esse é o mural da turma. Compartilhe avisos,
+            atividades e comentários!
           </p>
 
-          <!-- AÇÕES -->
-          <div class="flex items-center gap-4 mt-5">
-
-            <button
-              onclick="curtir(this)"
-              class="flex items-center gap-2 text-gray-600 hover:text-red-500"
-            >
-              ❤️ <span>0</span>
+          <div class="flex gap-4 mb-4">
+            <button onclick="curtir(this)" class="bg-pink-100 px-4 py-2 rounded-lg hover:bg-pink-200">
+              👍 Curtir (<span>0</span>)
             </button>
 
-            <button
-              onclick="toggleComentarios(this)"
-              class="text-gray-600 hover:text-blue-600"
-            >
-              💬 Comentários
+            <button onclick="discurtir(this)" class="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200">
+              👎 Discurtir (<span>0</span>)
             </button>
-
           </div>
 
-          <!-- COMENTÁRIOS -->
-          <div class="comentarios mt-5 hidden">
+          <!-- Comentários -->
+          <div class="mt-4">
+            <input
+              type="text"
+              placeholder="Escreva um comentário..."
+              class="comentarioInput border rounded-lg p-2 w-full mb-2"
+            >
 
-            <div class="lista-comentarios space-y-2 mb-3"></div>
+            <button
+              onclick="adicionarComentario(this)"
+              class="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500"
+            >
+              Comentar
+            </button>
 
-            <div class="flex gap-2">
-
-              <input
-                type="text"
-                placeholder="Escreva um comentário..."
-                class="comentario-input flex-1 border rounded-lg px-3 py-2"
-              />
-
-              <button
-                onclick="comentar(this)"
-                class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700"
-              >
-                Enviar
-              </button>
-
-            </div>
-
+            <div class="comentarios mt-4 space-y-2"></div>
           </div>
 
         </div>
+
       </div>
-
-      <!-- POST 2 -->
-      <div class="bg-white rounded-2xl overflow-hidden shadow-md card-hover fade-in">
-
-        <div class="p-5">
-
-          <h2 class="text-2xl font-bold text-gray-800">
-            Aula de Programação 💻
-          </h2>
-
-          <p class="text-gray-600 mt-3">
-            Hoje aprendemos HTML, CSS e JavaScript criando aplicações modernas.
-          </p>
-
-          <div class="flex items-center gap-4 mt-5">
-
-            <button
-              onclick="curtir(this)"
-              class="flex items-center gap-2 text-gray-600 hover:text-red-500"
-            >
-              ❤️ <span>0</span>
-            </button>
-
-            <button
-              onclick="toggleComentarios(this)"
-              class="text-gray-600 hover:text-blue-600"
-            >
-              💬 Comentários
-            </button>
-
-          </div>
-
-          <div class="comentarios mt-5 hidden">
-
-            <div class="lista-comentarios space-y-2 mb-3"></div>
-
-            <div class="flex gap-2">
-
-              <input
-                type="text"
-                placeholder="Escreva um comentário..."
-                class="comentario-input flex-1 border rounded-lg px-3 py-2"
-              />
-
-              <button
-                onclick="comentar(this)"
-                class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700"
-              >
-                Enviar
-              </button>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-    </div>
+    </section>
 
   </main>
 
-  <!-- MODAL -->
-  <div
-    id="modal"
-    class="fixed inset-0 bg-black/50 hidden items-center justify-center p-4"
-  >
-
-    <div class="bg-white w-full max-w-lg rounded-2xl shadow-xl p-6">
-
-      <div class="flex items-center justify-between mb-5">
-
-        <h2 class="text-2xl font-bold text-gray-800">
-          Nova Postagem
-        </h2>
-
-        <button
-          onclick="fecharModal()"
-          class="text-2xl text-gray-500 hover:text-red-500"
-        >
-          ×
-        </button>
-
-      </div>
-
-      <!-- FORM -->
-      <form id="postForm" class="space-y-4">
-
-        <!-- TÍTULO -->
-        <div>
-          <label class="block mb-1 font-medium">
-            Título
-          </label>
-
-          <input
-            type="text"
-            id="titulo"
-            required
-            class="w-full border rounded-xl px-4 py-3"
-            placeholder="Digite o título"
-          />
-        </div>
-
-        <!-- DESCRIÇÃO -->
-        <div>
-          <label class="block mb-1 font-medium">
-            Descrição
-          </label>
-
-          <textarea
-            id="descricao"
-            required
-            rows="4"
-            class="w-full border rounded-xl px-4 py-3"
-            placeholder="Digite a descrição"
-          ></textarea>
-        </div>
-
-        <!-- IMAGEM OPCIONAL -->
-        <div>
-          <label class="block mb-1 font-medium">
-            Adicionar imagem (opcional)
-          </label>
-
-          <input
-            type="file"
-            id="imagem"
-            accept="image/*"
-            class="w-full border rounded-xl px-4 py-3 bg-white"
-          />
-        </div>
-
-        <!-- BOTÃO -->
-        <button
-          type="submit"
-          class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition"
-        >
-          Publicar
-        </button>
-
-      </form>
-
-    </div>
-
-  </div>
+  <!-- Rodapé -->
+  <footer class="bg-pink-200 mt-10 p-5 text-center text-pink-800 font-semibold">
+    © 2026 - Mural da Turma | Desenvolvido em HTML, Tailwind e JavaScript
+  </footer>
 
   <script>
 
-    const modal = document.getElementById("modal");
-    const form = document.getElementById("postForm");
-    const postsContainer = document.getElementById("postsContainer");
+    // Criar postagem
+    function criarPost() {
 
-    // ABRIR MODAL
-    function abrirModal() {
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
+      const titulo = document.getElementById("titulo").value;
+      const conteudo = document.getElementById("conteudo").value;
+      const imagem = document.getElementById("imagem").files[0];
+
+      if (titulo.trim() === "" || conteudo.trim() === "") {
+        alert("Preencha o título e o conteúdo!");
+        return;
+      }
+
+      const posts = document.getElementById("posts");
+
+      const post = document.createElement("div");
+      post.className = "bg-white rounded-2xl shadow-lg p-5 post-animation";
+
+      let imagemHTML = "";
+
+      if (imagem) {
+        const imagemURL = URL.createObjectURL(imagem);
+
+        imagemHTML = `
+          <img
+            src="${imagemURL}"
+            class="rounded-xl mt-4 max-h-96 object-cover w-full"
+          >
+        `;
+      }
+
+      post.innerHTML = `
+        <h3 class="text-xl font-bold text-pink-700 mb-2">
+          ${titulo}
+        </h3>
+
+        <p class="mb-4">
+          ${conteudo}
+        </p>
+
+        ${imagemHTML}
+
+        <div class="flex gap-4 mt-4 mb-4">
+
+          <button onclick="curtir(this)"
+            class="bg-pink-100 px-4 py-2 rounded-lg hover:bg-pink-200">
+            👍 Curtir (<span>0</span>)
+          </button>
+
+          <button onclick="discurtir(this)"
+            class="bg-gray-100 px-4 py-2 rounded-lg hover:bg-gray-200">
+            👎 Discurtir (<span>0</span>)
+          </button>
+
+        </div>
+
+        <div class="mt-4">
+
+          <input
+            type="text"
+            placeholder="Escreva um comentário..."
+            class="comentarioInput border rounded-lg p-2 w-full mb-2"
+          >
+
+          <button
+            onclick="adicionarComentario(this)"
+            class="bg-pink-400 text-white px-4 py-2 rounded-lg hover:bg-pink-500"
+          >
+            Comentar
+          </button>
+
+          <div class="comentarios mt-4 space-y-2"></div>
+
+        </div>
+      `;
+
+      posts.prepend(post);
+
+      // Limpar campos
+      document.getElementById("titulo").value = "";
+      document.getElementById("conteudo").value = "";
+      document.getElementById("imagem").value = "";
+
     }
 
-    // FECHAR MODAL
-    function fecharModal() {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
-
-    // CURTIR
+    // Curtidas
     function curtir(botao) {
-
       let span = botao.querySelector("span");
-
-      let likes = parseInt(span.innerText);
-
-      likes++;
-
-      span.innerText = likes;
+      let numero = Number(span.innerText);
+      numero++;
+      span.innerText = numero;
     }
 
-    // MOSTRAR COMENTÁRIOS
-    function toggleComentarios(botao) {
-
-      const post =
-        botao.closest(".p-5");
-
-      const comentarios =
-        post.querySelector(".comentarios");
-
-      comentarios.classList.toggle("hidden");
+    // Discurtidas
+    function discurtir(botao) {
+      let span = botao.querySelector("span");
+      let numero = Number(span.innerText);
+      numero++;
+      span.innerText = numero;
     }
 
-    // COMENTAR
-    function comentar(botao) {
+    // Comentários
+    function adicionarComentario(botao) {
 
       const areaComentarios =
-        botao.closest(".comentarios");
+        botao.parentElement.querySelector(".comentarios");
 
       const input =
-        areaComentarios.querySelector(".comentario-input");
+        botao.parentElement.querySelector(".comentarioInput");
 
-      const lista =
-        areaComentarios.querySelector(".lista-comentarios");
-
-      if(input.value.trim() === "") return;
+      if (input.value.trim() === "") {
+        alert("Digite um comentário!");
+        return;
+      }
 
       const comentario = document.createElement("div");
 
       comentario.className =
-        "bg-gray-100 rounded-lg px-3 py-2 text-sm text-gray-700";
+        "bg-pink-50 border border-pink-100 p-3 rounded-lg";
 
-      comentario.innerText = input.value;
+      comentario.innerHTML = `
+        💬 ${input.value}
+      `;
 
-      lista.appendChild(comentario);
+      areaComentarios.appendChild(comentario);
 
       input.value = "";
     }
 
-    // NOVA POSTAGEM
-    form.addEventListener("submit", function(e){
-
-      e.preventDefault();
-
-      const titulo =
-        document.getElementById("titulo").value;
-
-      const descricao =
-        document.getElementById("descricao").value;
-
-      const imagemInput =
-        document.getElementById("imagem");
-
-      const file =
-        imagemInput.files[0];
-
-      // CRIAR POST
-      function criarPost(imagemURL = null){
-
-        const post = document.createElement("div");
-
-        post.className =
-          "bg-white rounded-2xl overflow-hidden shadow-md card-hover fade-in";
-
-        post.innerHTML = `
-
-          ${
-            imagemURL
-            ? `
-              <img
-                src="${imagemURL}"
-                class="w-full h-56 object-cover"
-              />
-            `
-            : ""
-          }
-
-          <div class="p-5">
-
-            <h2 class="text-2xl font-bold text-gray-800">
-              ${titulo}
-            </h2>
-
-            <p class="text-gray-600 mt-3">
-              ${descricao}
-            </p>
-
-            <div class="flex items-center gap-4 mt-5">
-
-              <button
-                onclick="curtir(this)"
-                class="flex items-center gap-2 text-gray-600 hover:text-red-500"
-              >
-                ❤️ <span>0</span>
-              </button>
-
-              <button
-                onclick="toggleComentarios(this)"
-                class="text-gray-600 hover:text-blue-600"
-              >
-                💬 Comentários
-              </button>
-
-            </div>
-
-            <div class="comentarios mt-5 hidden">
-
-              <div class="lista-comentarios space-y-2 mb-3"></div>
-
-              <div class="flex gap-2">
-
-                <input
-                  type="text"
-                  placeholder="Escreva um comentário..."
-                  class="comentario-input flex-1 border rounded-lg px-3 py-2"
-                />
-
-                <button
-                  onclick="comentar(this)"
-                  class="bg-blue-600 text-white px-4 rounded-lg hover:bg-blue-700"
-                >
-                  Enviar
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-        `;
-
-        postsContainer.prepend(post);
-
-        form.reset();
-
-        fecharModal();
-      }
-
-      // SE TIVER IMAGEM
-      if(file){
-
-        const reader = new FileReader();
-
-        reader.onload = function(event){
-
-          criarPost(event.target.result);
-        };
-
-        reader.readAsDataURL(file);
-
-      } else {
-
-        // POST SEM IMAGEM
-        criarPost();
-      }
-
-    });
-
   </script>
+
 </body>
-test number2
 </html>
-```
